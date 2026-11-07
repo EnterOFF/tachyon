@@ -1,0 +1,23 @@
+name: Sync Tags from Upstream
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Запуск каждый день в полночь
+  workflow_dispatch: # Возможность запустить вручную
+
+jobs:
+  sync-tags:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Sync tags
+        run: |
+          # Замените ссылку ниже на URL оригинального репозитория
+          git remote add upstream https://github.com/Dushnilin/tachyon.git
+          git fetch upstream --tags
+          git push origin --tags
